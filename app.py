@@ -1,15 +1,17 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
+from sklearn.linear_model import LogisticRegression
 import pickle
 
-# Defining Xtreme gradient's selected features as expected columns
+
+# Defining features as expected columns
 expected_columns = [
-    'age', 'resting_bp', 'cholestrol', 'Max_heart_rate', 'oldpeak',
-    'sex_0', 'chest_pain_0', 'chest_pain_1', 'chest_pain_2', 'chest_pain_3',
-    'fasting_bsugar_0', 'resting_ECG_0', 'resting_ECG_1',
-    'ex_angina_0', 'slope_0', 'slope_1', 'slope_2',
-    'No_maj_vessels_0', 'No_maj_vessels_1', 'No_maj_vessels_2', 'No_maj_vessels_3',
-    'thalassemia_1', 'thalassemia_2', 'thalassemia_3'
+   'age', 'resting_bp', 'cholestrol', 'Max_heart_rate', 'oldpeak',
+       'target', 'sex_1', 'chest_pain_1', 'chest_pain_2', 'chest_pain_3',
+       'fasting_bsugar_1', 'resting_ECG_1', 'resting_ECG_2', 'ex_angina_1',
+       'slope_1', 'slope_2', 'No_maj_vessels_1', 'No_maj_vessels_2',
+       'No_maj_vessels_3', 'thalassemia_2', 'thalassemia_3'
 ]
 
 # App title
@@ -59,7 +61,7 @@ def user_input_features():
     features = pd.get_dummies(features, columns=[
         'sex', 'chest_pain', 'fasting_bsugar', 'resting_ECG', 
         'ex_angina', 'slope', 'No_maj_vessels', 'thalassemia'
-    ])
+    ],dtype=int,drop_first=True)
     
     # Ensuring all expected columns are present
     for column in expected_columns:
@@ -74,7 +76,7 @@ def user_input_features():
 input_df = user_input_features()
 
 # Loading model
-with open('Xtreme_gradient_model.pkl', 'rb') as file:
+with open('Logistic_Regression_model.pkl', 'rb') as file:
     load_clf = pickle.load(file)
 
 # Making predictions
